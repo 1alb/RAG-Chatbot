@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rocket Technologies - Company Policy</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,Helvetica,sans-serif;
+}
+
+body{
+background:#f4f7fb;
+color:#333;
+line-height:1.6;
+}
+
+header{
+background:#0d6efd;
+color:white;
+padding:20px;
+position:sticky;
+top:0;
+z-index:100;
+}
+
+header h1{
+text-align:center;
+margin-bottom:10px;
+}
+
+nav{
+display:flex;
+justify-content:center;
+flex-wrap:wrap;
+gap:20px;
+}
+
+nav a{
+color:white;
+text-decoration:none;
+font-weight:bold;
+}
+
+.hero{
+background:white;
+padding:50px;
+text-align:center;
+}
+
+.hero h2{
+font-size:38px;
+color:#0d6efd;
+margin-bottom:20px;
+}
+
+.hero p{
+font-size:18px;
+}
+
+.container{
+width:90%;
+margin:auto;
+padding:30px 0;
+}
+
+.section-title{
+text-align:center;
+font-size:30px;
+margin-bottom:30px;
+color:#0d6efd;
+}
+
+.cards{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+gap:20px;
+}
+
+.card{
+background:white;
+padding:25px;
+border-radius:10px;
+box-shadow:0 3px 8px rgba(0,0,0,.15);
+}
+
+.card h3{
+margin-bottom:15px;
+color:#0d6efd;
+}
+
+.card ul{
+padding-left:20px;
+}
+
+.card li{
+margin-bottom:10px;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+margin-top:10px;
+}
+
+table th{
+background:#0d6efd;
+color:white;
+padding:10px;
+}
+
+table td{
+border:1px solid #ddd;
+padding:10px;
+}
+
+.faq{
+background:white;
+padding:20px;
+margin-bottom:20px;
+border-radius:8px;
+box-shadow:0 2px 5px rgba(0,0,0,.1);
+}
+
+.faq h4{
+color:#0d6efd;
+margin-bottom:10px;
+}
+
+.contact{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(350px,1fr));
+gap:20px;
+}
+
+.contact-box{
+background:white;
+padding:25px;
+border-radius:10px;
+box-shadow:0 3px 8px rgba(0,0,0,.15);
+}
+
+.contact-box h3{
+color:#0d6efd;
+margin-bottom:15px;
+}
+
+.questions{
+background:white;
+padding:25px;
+border-radius:10px;
+box-shadow:0 3px 8px rgba(0,0,0,.15);
+}
+
+.questions li{
+margin-bottom:12px;
+}
+
+footer{
+background:#0d6efd;
+color:white;
+text-align:center;
+padding:20px;
+margin-top:40px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+<h1>Rocket Technologies</h1>
+
+<nav>
+
+<a href="#hours">Working Hours</a>
+<a href="#attendance">Attendance</a>
+<a href="#leave">Leave</a>
+<a href="#reservation">Reservation</a>
+<a href="#security">Security</a>
+<a href="#faq">FAQ</a>
+<a href="#contact">Contact</a>
+
+</nav>
+
+</header>
+
+<section class="hero">
+
+<h2>Company Policy Portal</h2>
+
+<p>
+Welcome to Rocket Technologies.
+This portal contains the company policies regarding attendance,
+leave, work from home, reservations, IT support, HR, security,
+dress code, and FAQs.
+</p>
+
+</section>
+
+<div class="container">
+
+<h2 class="section-title">Company Policies</h2>
+
+<div class="cards">
+
+<div class="card" id="hours">
+
+<h3>Office Working Hours</h3>
+
+<ul>
+<li>Monday to Friday</li>
+<li>Office Timing: <strong>9:00 AM – 6:00 PM</strong></li>
+<li>Lunch Break: <strong>1:00 PM – 2:00 PM</strong></li>
+<li>Saturday & Sunday are Holidays</li>
+</ul>
+
+</div>
+
+<div class="card" id="attendance">
+
+<h3>Attendance Policy</h3>
+
+<ul>
+<li>Attendance before 9:15 AM</li>
+<li>3 late arrivals = 1 leave</li>
+<li>Work From Home requires manager approval</li>
+</ul>
+
+</div>
+
+<div class="card" id="leave">
+
+<h3>Leave Policy</h3>
+
+<table>
+
+<tr>
+<th>Leave Type</th>
+<th>Per Year</th>
+</tr>
+
+<tr>
+<td>Casual Leave</td>
+<td>12</td>
+</tr>
+
+<tr>
+<td>Sick Leave</td>
+<td>12</td>
+</tr>
+
+<tr>
+<td>Paid Leave</td>
+<td>20</td>
+</tr>
+
+</table>
+
+<br>
+
+<ul>
+<li>Apply 2 days in advance.</li>
+<li>Emergency leave can be requested on the same day.</li>
+</ul>
+
+</div>
+
+<div class="card">
+
+<h3>Work From Home</h3>
+
+<ul>
+<li>Maximum 2 days per week.</li>
+<li>Manager approval required.</li>
+<li>Stable internet connection is mandatory.</li>
+</ul>
+
+</div>
+
+<div class="card" id="reservation">
+
+<h3>Meeting Room Reservation</h3>
+
+<table>
+
+<tr>
+
+<th>Room</th>
+<th>Capacity</th>
+
+</tr>
+
+<tr>
+
+<td>Room A</td>
+<td>10 Seats</td>
+
+</tr>
+
+<tr>
+
+<td>Room B</td>
+<td>20 Seats</td>
+
+</tr>
+
+<tr>
+
+<td>Conference Hall</td>
+<td>100 Seats</td>
+
+</tr>
+
+</table>
+
+<br>
+
+<ul>
+<li>Reserve through company portal.</li>
+<li>Reserve at least 1 hour in advance.</li>
+</ul>
+
+</div>
+
+<div class="card">
+
+<h3>Dress Code</h3>
+
+<ul>
+<li>Business Casual attire.</li>
+<li>Fridays are Casual Dress Days.</li>
+</ul>
+
+</div>
+
+<div class="card" id="security">
+
+<h3>Security Policy</h3>
+
+<ul>
+<li>Wear employee ID card inside office.</li>
+<li>Visitors must register at reception.</li>
+<li>Never share confidential documents outside the organization.</li>
+</ul>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="container" id="faq">
+
+<h2 class="section-title">Frequently Asked Questions</h2>
+
+<div class="faq">
+
+<h4>What are office timings?</h4>
+
+<p>Office hours are Monday to Friday from <strong>9:00 AM to 6:00 PM.</strong></p>
+
+</div>
+
+<div class="faq">
+
+<h4>How many casual leaves are available?</h4>
+
+<p>Employees receive <strong>12 Casual Leaves</strong> every year.</p>
+
+</div>
+
+<div class="faq">
+
+<h4>Can I work from home?</h4>
+
+<p>Yes. Employees can work from home for up to two days per week with manager approval.</p>
+
+</div>
+
+<div class="faq">
+
+<h4>How do I reserve a meeting room?</h4>
+
+<p>Reserve through the company portal at least one hour before the meeting.</p>
+
+</div>
+
+<div class="faq">
+
+<h4>Who should I contact for IT issues?</h4>
+
+<p>Email support@abctech.com or call +91-9876543210.</p>
+
+</div>
+
+</div>
+
+<div class="container" id="contact">
+
+<h2 class="section-title">Contact Information</h2>
+
+<div class="contact">
+
+<div class="contact-box">
+
+<h3>IT Support</h3>
+
+<p><strong>Email:</strong> support@Rockettech.com</p>
+
+<p><strong>Phone:</strong> +91-9876543210</p>
+
+<p><strong>Working Hours:</strong> 9:00 AM – 6:00 PM</p>
+
+</div>
+
+<div class="contact-box">
+
+<h3>HR Department</h3>
+
+<p><strong>Email:</strong> hr@Rockettech.com</p>
+
+<p><strong>Phone:</strong> +91-9123456780</p>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="container">
+
+<h2 class="section-title">Test Questions for RAG Chatbot</h2>
+
+<div class="questions">
+
+<ol>
+
+<li>What are the office working hours?</li>
+
+<li>How many casual leaves do employees receive?</li>
+
+<li>What is the lunch break timing?</li>
+
+<li>Can employees work from home?</li>
+
+<li>How do I reserve a meeting room?</li>
+
+<li>What is the HR email address?</li>
+
+<li>What is the IT support phone number?</li>
+
+<li>What is the attendance policy?</li>
+
+<li>What is the dress code?</li>
+
+<li>What should visitors do before entering the office?</li>
+
+</ol>
+
+</div>
+
+</div>
+
+<footer>
+
+<p>© 2026 Rocket Technologies | Company Policy Portal</p>
+
+</footer>
+
+<link
+rel="stylesheet"
+href="https://cdn.jsdelivr.net/npm/@n8n/chat/dist/style.css"
+/>
+
+<script type="module">
+
+import { createChat } from 'https://cdn.jsdelivr.net/npm/@n8n/chat/dist/chat.bundle.es.js';
+
+createChat({
+
+webhookUrl: 'https://monalgaur.app.n8n.cloud/webhook-test/chatbot'
+
+});
+
+</script>
+
+</body>
+
+</html>
