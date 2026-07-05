@@ -2,547 +2,229 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chatbot</title>
+<title>RAG Chatbot</title>
+
 <style>
-  :root {
-    --bg: #f7f8fa;
-    --surface: #ffffff;
-    --ink: #12151c;
-    --ink-soft: #5b6474;
-    --border: #e3e6ec;
-    --accent: #2f5dfc;
-    --accent-dim: #e8edff;
-    --success: #1f9d55;
-    --success-bg: #e7f7ec;
-    --pending-bg: #fff6e0;
-    --pending-ink: #966b06;
-    --error: #d1453b;
-    --error-bg: #fdeceb;
-    --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, Roboto, Helvetica, Arial, sans-serif;
-  }
 
-  * { box-sizing: border-box; }
+body{
+    font-family:Arial;
+    background:#f4f4f4;
+    margin:0;
+}
 
-  body {
-    margin: 0;
-    background: var(--bg);
-    color: var(--ink);
-    font-family: var(--sans);
-    min-height: 100vh;
-    -webkit-font-smoothing: antialiased;
-  }
+.container{
+    width:900px;
+    margin:auto;
+    margin-top:30px;
+}
 
-  .frame {
-    max-width: 860px;
-    margin: 0 auto;
-    padding: 48px 24px 80px;
-  }
+h2{
+    text-align:center;
+}
 
-  header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 36px;
-  }
+#chat{
+    height:450px;
+    overflow-y:auto;
+    background:white;
+    border-radius:8px;
+    padding:20px;
+    border:1px solid #ccc;
+}
 
-  .brand {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
+.user{
+    text-align:right;
+    margin:10px;
+}
 
-  .brand-mark {
-    width: 36px;
-    height: 36px;
-    border-radius: 10px;
-    background: var(--accent);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-  }
+.bot{
+    text-align:left;
+    margin:10px;
+}
 
-  .brand-mark svg { width: 18px; height: 18px; }
+.msg{
+    display:inline-block;
+    padding:10px;
+    border-radius:10px;
+    max-width:70%;
+}
 
-  h1 {
-    font-size: 19px;
-    font-weight: 600;
-    margin: 0;
-    letter-spacing: -0.01em;
-  }
+.user .msg{
+    background:#007bff;
+    color:white;
+}
 
-  .subtitle {
-    font-size: 12.5px;
-    color: var(--ink-soft);
-    margin-top: 1px;
-  }
+.bot .msg{
+    background:#ececec;
+}
 
-  .status-pill {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 12px;
-    color: var(--ink-soft);
-    background: var(--surface);
-    border: 1px solid var(--border);
-    padding: 6px 12px;
-    border-radius: 20px;
-  }
+.controls{
+    margin-top:20px;
+}
 
-  .status-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--success);
-  }
+textarea{
+    width:100%;
+    height:80px;
+    padding:10px;
+}
 
-  .card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    margin-bottom: 24px;
-    overflow: hidden;
-  }
+button{
+    margin-top:10px;
+    padding:10px 25px;
+    cursor:pointer;
+}
 
-  .card-header {
-    padding: 16px 20px;
-    border-bottom: 1px solid var(--border);
-  }
+input[type=file]{
+    margin-bottom:15px;
+}
 
-  .card-title {
-    font-size: 13px;
-    font-weight: 600;
-    margin: 0 0 2px;
-  }
-
-  .card-desc {
-    font-size: 12px;
-    color: var(--ink-soft);
-    margin: 0;
-  }
-
-  .card-body { padding: 20px; }
-
-  /* Upload zone */
-  .dropzone {
-    border: 1.5px dashed var(--border);
-    border-radius: 10px;
-    background: var(--bg);
-    padding: 32px 20px;
-    text-align: center;
-    cursor: pointer;
-    transition: border-color 0.15s ease, background 0.15s ease;
-    position: relative;
-  }
-
-  .dropzone:hover, .dropzone.drag-over {
-    border-color: var(--accent);
-    background: var(--accent-dim);
-  }
-
-  .dropzone input[type="file"] {
-    position: absolute;
-    inset: 0;
-    opacity: 0;
-    cursor: pointer;
-  }
-
-  .dropzone-icon {
-    width: 34px;
-    height: 34px;
-    border-radius: 8px;
-    background: var(--accent-dim);
-    color: var(--accent);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 12px;
-  }
-
-  .dropzone-icon svg { width: 16px; height: 16px; }
-
-  .dropzone-text {
-    font-size: 13.5px;
-    font-weight: 500;
-    color: var(--ink);
-  }
-
-  .dropzone-sub {
-    font-size: 12px;
-    color: var(--ink-soft);
-    margin-top: 4px;
-  }
-
-  .file-list {
-    margin-top: 14px;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-
-  .file-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px 14px;
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    font-size: 12.5px;
-  }
-
-  .file-row .name {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    max-width: 55%;
-    font-weight: 500;
-  }
-
-  .file-row .meta {
-    color: var(--ink-soft);
-    font-size: 11.5px;
-  }
-
-  .file-state {
-    font-size: 10.5px;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-    padding: 3px 9px;
-    border-radius: 20px;
-  }
-
-  .file-state.pending { background: var(--pending-bg); color: var(--pending-ink); }
-  .file-state.uploading { background: var(--accent-dim); color: var(--accent); }
-  .file-state.done { background: var(--success-bg); color: var(--success); }
-  .file-state.error { background: var(--error-bg); color: var(--error); }
-
-  /* Chat */
-  .chat-log {
-    height: 420px;
-    overflow-y: auto;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-  }
-
-  .msg {
-    max-width: 78%;
-    font-size: 13.5px;
-    line-height: 1.55;
-  }
-
-  .msg .role {
-    font-size: 10.5px;
-    font-weight: 600;
-    letter-spacing: 0.03em;
-    text-transform: uppercase;
-    color: var(--ink-soft);
-    margin-bottom: 4px;
-  }
-
-  .msg.user {
-    align-self: flex-end;
-    text-align: right;
-  }
-
-  .msg.user .bubble {
-    background: var(--accent);
-    color: #fff;
-    padding: 10px 14px;
-    border-radius: 12px 12px 3px 12px;
-    display: inline-block;
-    text-align: left;
-  }
-
-  .msg.assistant .bubble {
-    background: var(--bg);
-    border: 1px solid var(--border);
-    padding: 10px 14px;
-    border-radius: 12px 12px 12px 3px;
-    display: inline-block;
-  }
-
-  .msg.system .bubble {
-    color: var(--ink-soft);
-    font-size: 12.5px;
-  }
-
-  .chat-input-row {
-    border-top: 1px solid var(--border);
-    display: flex;
-    padding: 14px;
-    gap: 10px;
-  }
-
-  .chat-input-row input {
-    flex: 1;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    background: var(--bg);
-    padding: 11px 14px;
-    font-family: var(--sans);
-    font-size: 13.5px;
-    color: var(--ink);
-  }
-
-  .chat-input-row input:focus {
-    outline: none;
-    border-color: var(--accent);
-    background: var(--surface);
-  }
-
-  .send-btn {
-    background: var(--accent);
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    padding: 0 22px;
-    font-family: var(--sans);
-    font-size: 13px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.15s ease;
-  }
-
-  .send-btn:hover { background: #2149d1; }
-  .send-btn:disabled { background: var(--border); color: var(--ink-soft); cursor: not-allowed; }
-
-  .config-note {
-    font-size: 11.5px;
-    color: var(--ink-soft);
-    margin-top: 10px;
-    line-height: 1.6;
-  }
-
-  .config-note code {
-    background: var(--bg);
-    border: 1px solid var(--border);
-    padding: 1px 5px;
-    border-radius: 4px;
-    font-size: 11px;
-  }
-
-  ::-webkit-scrollbar { width: 8px; }
-  ::-webkit-scrollbar-track { background: transparent; }
-  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
-
-  @media (max-width: 600px) {
-    header { flex-direction: column; align-items: flex-start; gap: 14px; }
-    h1 { font-size: 17px; }
-  }
 </style>
+
 </head>
+
 <body>
 
-<div class="frame">
+<div class="container">
 
-  <header>
-    <div class="brand">
-      <div class="brand-mark">
-        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M4 5.5C4 4.67 4.67 4 5.5 4h13c.83 0 1.5.67 1.5 1.5v9c0 .83-.67 1.5-1.5 1.5H9l-4 4v-4H5.5C4.67 15 4 14.33 4 13.5v-8Z" fill="white"/>
-        </svg>
-      </div>
-      <div>
-        <h1>Chatbot</h1>
-        <div class="subtitle">Ask questions about your uploaded documents</div>
-      </div>
-    </div>
-    <div class="status-pill">
-      <span class="status-dot"></span>Connected
-    </div>
-  </header>
+<h2>📄 AI RAG Chatbot</h2>
 
-  <div class="card">
-    <div class="card-header">
-      <p class="card-title">Add a document</p>
-      <p class="card-desc">Upload a PDF to add it to the knowledge base</p>
-    </div>
-    <div class="card-body">
-      <div class="dropzone" id="dropzone">
-        <input type="file" id="fileInput" accept="application/pdf" multiple>
-        <div class="dropzone-icon">
-          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 16V4M12 4L7 9M12 4L17 9M5 20H19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </div>
-        <div class="dropzone-text">Drop a PDF here, or click to browse</div>
-        <div class="dropzone-sub">Documents are indexed automatically once uploaded</div>
-      </div>
-      <div class="file-list" id="fileList"></div>
-      <p class="config-note">Uploads are sent to the webhook set in <code>UPLOAD_WEBHOOK_URL</code>.</p>
-    </div>
-  </div>
+<input type="file" id="file" accept=".txt">
 
-  <div class="card">
-    <div class="card-header">
-      <p class="card-title">Ask a question</p>
-      <p class="card-desc">Answers are drawn from your documents, with a live web search as a fallback</p>
-    </div>
-    <div class="chat-log" id="chatLog">
-      <div class="msg system">
-        <div class="bubble">Ask a question to get started.</div>
-      </div>
-    </div>
-    <div class="chat-input-row">
-      <input type="text" id="chatInput" placeholder="Type your question…" autocomplete="off">
-      <button class="send-btn" id="sendBtn">Send</button>
-    </div>
-  </div>
-  <p class="config-note" style="margin-top: -14px;">Chat is sent to the webhook set in <code>CHAT_WEBHOOK_URL</code>.</p>
+<div id="chat"></div>
+
+<div class="controls">
+
+<textarea
+id="question"
+placeholder="Ask a question..."></textarea>
+
+<button onclick="askQuestion()">Send</button>
+
+</div>
 
 </div>
 
 <script>
-  // ---- Configuration: paste your n8n Webhook Production URLs here ----
-  const UPLOAD_WEBHOOK_URL = "https://sansaidwhattt.app.n8n.cloud/webhook/upload-pdf";
-  const CHAT_WEBHOOK_URL   = "https://monalgaur.app.n8n.cloud/webhook-test/chatbot";
-  // ----------------------------------------------------------------------
 
-  const dropzone = document.getElementById('dropzone');
-  const fileInput = document.getElementById('fileInput');
-  const fileList = document.getElementById('fileList');
-  const chatLog = document.getElementById('chatLog');
-  const chatInput = document.getElementById('chatInput');
-  const sendBtn = document.getElementById('sendBtn');
+let uploadedText="";
 
-  // ---- Upload handling ----
-  fileInput.addEventListener('change', (e) => handleFiles(e.target.files));
+document.getElementById("file").addEventListener("change",function(e){
 
-  ['dragover', 'dragenter'].forEach(evt =>
-    dropzone.addEventListener(evt, (e) => {
-      e.preventDefault();
-      dropzone.classList.add('drag-over');
-    })
-  );
-  ['dragleave', 'drop'].forEach(evt =>
-    dropzone.addEventListener(evt, (e) => {
-      e.preventDefault();
-      dropzone.classList.remove('drag-over');
-    })
-  );
-  dropzone.addEventListener('drop', (e) => {
-    if (e.dataTransfer.files.length) handleFiles(e.dataTransfer.files);
-  });
+const file=e.target.files[0];
 
-  function formatSize(bytes) {
-    if (bytes < 1024) return bytes + ' B';
-    if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
-    return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
-  }
+if(!file){
 
-  function handleFiles(files) {
-    [...files].forEach(file => {
-      if (file.type !== 'application/pdf') {
-        addFileRow(file.name, formatSize(file.size), 'error', 'Not a PDF');
-        return;
-      }
-      const row = addFileRow(file.name, formatSize(file.size), 'pending', 'Queued');
-      uploadFile(file, row);
-    });
-  }
+return;
 
-  function addFileRow(name, meta, state, label) {
-    const row = document.createElement('div');
-    row.className = 'file-row';
-    row.innerHTML = `
-      <span class="name">${name}</span>
-      <span class="meta">${meta}</span>
-      <span class="file-state ${state}">${label}</span>
-    `;
-    fileList.prepend(row);
-    return row;
-  }
+}
 
-  function setRowState(row, state, label) {
-    const tag = row.querySelector('.file-state');
-    tag.className = 'file-state ' + state;
-    tag.textContent = label;
-  }
+const reader=new FileReader();
 
-  async function uploadFile(file, row) {
-    setRowState(row, 'uploading', 'Uploading');
+reader.onload=function(event){
 
-    if (UPLOAD_WEBHOOK_URL.includes('YOUR-N8N-DOMAIN')) {
-      setRowState(row, 'error', 'Webhook not set');
-      return;
-    }
+uploadedText=event.target.result;
 
-    const formData = new FormData();
-    formData.append('data', file, file.name);
+addBotMessage("✅ File uploaded successfully.");
 
-    try {
-      const res = await fetch(UPLOAD_WEBHOOK_URL, {
-        method: 'POST',
-        body: formData
-      });
-      if (!res.ok) throw new Error('Upload failed: ' + res.status);
-      setRowState(row, 'done', 'Indexed');
-    } catch (err) {
-      console.error(err);
-      setRowState(row, 'error', 'Failed');
-    }
-  }
+}
 
-  // ---- Chat handling ----
-  function addMessage(role, text) {
-    const msg = document.createElement('div');
-    msg.className = 'msg ' + role;
-    const roleLabel = role === 'user' ? 'You' : role === 'assistant' ? 'Assistant' : '';
-    msg.innerHTML = `
-      ${roleLabel ? `<div class="role">${roleLabel}</div>` : ''}
-      <div class="bubble">${text}</div>
-    `;
-    chatLog.appendChild(msg);
-    chatLog.scrollTop = chatLog.scrollHeight;
-    return msg;
-  }
+reader.readAsText(file);
 
-  async function sendMessage() {
-    const text = chatInput.value.trim();
-    if (!text) return;
+});
 
-    if (CHAT_WEBHOOK_URL.includes('YOUR-N8N-DOMAIN')) {
-      addMessage('system', 'Chat webhook not configured yet — set CHAT_WEBHOOK_URL in the script.');
-      return;
-    }
+function addUserMessage(text){
 
-    addMessage('user', escapeHtml(text));
-    chatInput.value = '';
-    sendBtn.disabled = true;
+document.getElementById("chat").innerHTML+=
+`
+<div class="user">
+<div class="msg">${text}</div>
+</div>
+`;
 
-    const thinkingMsg = addMessage('assistant', '…');
+scrollChat();
 
-    try {
-      const res = await fetch(CHAT_WEBHOOK_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: text })
-      });
-      const data = await res.json();
-      const reply = data.reply || data.answer || data.text || 'No response field found in webhook output.';
-      thinkingMsg.querySelector('.bubble').textContent = reply;
-    } catch (err) {
-      console.error(err);
-      thinkingMsg.querySelector('.bubble').textContent = 'Something went wrong reaching the assistant.';
-    } finally {
-      sendBtn.disabled = false;
-    }
-  }
+}
 
-  function escapeHtml(str) {
-    const div = document.createElement('div');
-    div.textContent = str;
-    return div.innerHTML;
-  }
+function addBotMessage(text){
 
-  sendBtn.addEventListener('click', sendMessage);
-  chatInput.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') sendMessage();
-  });
+document.getElementById("chat").innerHTML+=
+`
+<div class="bot">
+<div class="msg">${text}</div>
+</div>
+`;
+
+scrollChat();
+
+}
+
+function scrollChat(){
+
+const chat=document.getElementById("chat");
+
+chat.scrollTop=chat.scrollHeight;
+
+}
+
+async function askQuestion(){
+
+const question=document.getElementById("question").value;
+
+if(question==""){
+
+alert("Enter question");
+
+return;
+
+}
+
+if(uploadedText==""){
+
+alert("Upload a text file first.");
+
+return;
+
+}
+
+addUserMessage(question);
+
+document.getElementById("question").value="";
+
+try{
+
+const response=await fetch("YOUR_N8N_WEBHOOK_URL",{
+
+method:"POST",
+
+headers:{
+
+"Content-Type":"application/json"
+
+},
+
+body:JSON.stringify({
+
+message:question,
+
+document:uploadedText
+
+})
+
+});
+
+const data=await response.json();
+
+addBotMessage(data.answer);
+
+}catch(err){
+
+addBotMessage("Error contacting chatbot.");
+
+}
+
+}
+const UPLOAD_WEBHOOK_URL = "https://monalgaur.app.n8n.cloud/webhook/c216ac61-2bfb-4622-8152-822e8f2ea823/chat";
+const CHAT_WEBHOOK_URL   = "https://monalgaur.app.n8n.cloud/webhook-test/chatbot";
+
 </script>
 
 </body>
